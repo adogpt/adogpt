@@ -31,17 +31,19 @@ const matches = [
 
 class MatchList extends React.Component {
 
-  
-
 	constructor(props) {
 		super(props)
-		
+		this.renderItem = this.renderItem.bind(this)
+	}
+
+	handleClick(data) {
+		console.log(data)
 	}
 
   renderItem(index, key) {
     return (
-    		<div key={key} className="messageListItem">
-    			<Avatar name= {matches[index].name} size={60} className="avatar" />
+    		<div key={key} className="messageListItem" onClick={() => this.handleClick(index)}>
+    			<Avatar name= {matches[index].name} size={60} className="avatar"/>
     			{matches[index].name}
     		</div>
     	)
