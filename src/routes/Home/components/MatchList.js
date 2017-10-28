@@ -34,11 +34,10 @@ class MatchList extends React.Component {
 	constructor(props) {
 		super(props)
 		this.renderItem = this.renderItem.bind(this)
+		this.handleClick = this.props.handleClick
 	}
 
-	handleClick(data) {
-		console.log(data)
-	}
+	
 
   renderItem(index, key) {
     return (

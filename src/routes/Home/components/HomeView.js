@@ -32,7 +32,7 @@ class HomeView extends React.Component {
 
     return (
       <div className='content-area'>
-        <AppBar position='static'>
+        <AppBar position='static' className='header'>
           <Toolbar className='toolBar'>
             Adogpt
             <form className='form' >

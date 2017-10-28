@@ -1,13 +1,11 @@
-.container-fluid {
-	height: 100%;
-}
-
-.col-md-6 {
-	height: 50%;
+.col-md-9 {
+	padding: 0;
+	height:100%
 }
 
 .col-md-3 {
 	padding: 0;
+	height:100%
 }
 
 .row {
@@ -25,6 +23,7 @@
 
 .content-area {
 	height: 100%;
+	position:relative;
 }
 
 .avatar {
@@ -32,5 +31,35 @@
 }
 
 .messageListItem {
+	text-align: left;
+}
+
+.msgBubble {
+	background-color: green;
+	margin: 10px;
+	padding: 15px;
+	
+	display: inline-block;
+	border-radius: 25px;
+}
+
+.msgIn {
+	position: absolute; 
+	bottom: 0;
+}
+
+.header {
+	height: 7%;
+}
+
+.content {
+	height: 93%;
+}
+
+.right {
+	text-align: right;
+}
+
+.left {
 	text-align: left;
 }

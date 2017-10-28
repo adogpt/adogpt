@@ -11,7 +11,6 @@ class SideBar extends React.Component {
 		super(props)
 	}
 
-
 	render() {
 		return (
 				<div>
@@ -21,7 +20,7 @@ class SideBar extends React.Component {
 							David Zhang
 						</Toolbar>
 					</AppBar>
-					<MatchList/>
+					<MatchList handleClick={this.props.handleClick}/>
 				</div>
 			)
 	}

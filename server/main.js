@@ -6,8 +6,6 @@ const webpackConfig = require('../build/webpack.config')
 const project = require('../project.config')
 const compress = require('compression')
 const TwitterStreamChannels = require('twitter-stream-channels')
-const credentials = require('../twitter-credentials.json')
-const client = new TwitterStreamChannels(credentials)
 
 const app = express()
 app.use(compress())
@@ -17,31 +15,10 @@ const channels = {
   "google" : ['goog', 'google'],
   "facebook" : ['facebook', 'mark zuckerberg', 'oculus'],
 }
-
-const stream = client.streamChannels({track:channels, timeout:50000})
-
 // Handle web sockets
 const http = require('http').Server(app)
 let io = require('socket.io')(http)
 
-
-io = io.on('connection', function (socket) {
-  console.log('user connected');
-  socket.on('disconnect', function () {
-    console.log('user disconnected');
-  });
-
-  // Stream out information related to google
-  stream.on('channels/google',function(tweet){
-		socket.emit('googleTweet', tweet.text);
-  });
-
-  // Stream out information related to facebook
-  stream.on('channels/facebook',function(tweet){
-    socket.emit('facebookTweet', tweet.text);
-	});
-
-});
 
 // Socket listens on port 3002
 http.listen(3002, function (err) {
