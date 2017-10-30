@@ -11,43 +11,47 @@ import ReactList from 'react-list'
 
 const matches = [
 	{
-		name: "meow"
+		name: "chairman meow"
 	}, 
 	{
-		name: "kitty"
+		name: "kitty kat"
 	},
 	{
-		name: "fat"
+		name: "sgt peppers"
 	},
 	{
-		name: "cat"
+		name: "llama del rey"
 	},
 	{
-		name: "dawg"
+		name: "snoop dawg"
 	},
 	{
-		name: "weeb"
+		name: "steve"
 	},
 	{
-		name: "nerd"
+		name: "mr woof"
 	},
 	{
-		name: "fuckboi"
+		name: "roger rabbit"
 	}
 ]
 
 let messages = [
 	{
-		text: 'suck ma dick',
+		text: 'hello!',
 		pos: 0
 	},
 	{
-		text: 'no!',
+		text: 'h1!',
 		pos: 1
 	},
 	{
-		text: 'wat the fuk lolz',
+		text: 'how old is the animal?',
 		pos: 1
+	},
+	{
+		text: 'she is 3 yo!',
+		pos: 0
 	}
 ]
 

@@ -4,28 +4,28 @@ import Avatar from 'react-avatar'
 
 const matches = [
 	{
-		name: "meow"
+		name: "chairman meow"
 	}, 
 	{
-		name: "kitty"
+		name: "kitty kat"
 	},
 	{
-		name: "fat"
+		name: "sgt peppers"
 	},
 	{
-		name: "cat"
+		name: "llama del rey"
 	},
 	{
-		name: "dawg"
+		name: "snoop dawg"
 	},
 	{
-		name: "weeb"
+		name: "steve"
 	},
 	{
-		name: "nerd"
+		name: "mr woof"
 	},
 	{
-		name: "fuckboi"
+		name: "roger rabbit"
 	}
 ]
 
