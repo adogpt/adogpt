@@ -148,7 +148,6 @@ class Content extends React.Component {
 
 	filterData(filter) {
 		// ES6 magic for filtering
-		console.log(this.state.filter);
 		let data = this.state.data.filter(item =>
 			(filter.length == 0) ||
 			(new Set(filter).has('cat') && [...new Set(item.species)].filter(x => new Set(catKeywords).has(x)).length > 0) ||
@@ -157,7 +156,6 @@ class Content extends React.Component {
 			(new Set(filter).has('bird') && [...new Set(item.species)].filter(x => new Set(birdKeywords).has(x)).length > 0) ||
 			([...new Set(filter)].filter(x => new Set(item.species).has(x)).length > 0)
 		)
-		console.log(data);
 		this.setState({data: data});
 	}
 
@@ -169,7 +167,6 @@ class Content extends React.Component {
 			that.filterData(newProps.filter);
 		})
 		.then(function() {
-			console.log(that.state.data.length);
 			if (that.state.data.length === 0){
 				that.fetchPetData();
 				that.forceUpdate();
@@ -375,8 +372,8 @@ class Content extends React.Component {
 				this.setState({conversations: conversations});
 
 				// console.log(this.state.modalData);
-				console.log(this.state.matches);
-				console.log(this.state.conversations);
+				// console.log(this.state.matches);
+				// console.log(this.state.conversations);
 			}
 
 			this.state.data.shift(); // clear last pet data
@@ -410,9 +407,6 @@ class Content extends React.Component {
 						   onUpdateMessage={this.onUpdateMessage}/>;
 		} else {
 			// i hate sublime
-
-			console.log(this.state.filter);
-			console.log(this.state.data);
 
 			Content = <Swipe
 						key={this.state.data.length}
