@@ -3,9 +3,26 @@ import './HomeView.scss'
 import SideBar from './Sidebar'
 import Swipe from './Swipe'
 import Msg from './Msg'
+import {ModalContainer, ModalDialog} from 'react-modal-dialog';
 
 const url = 'https://adogpt.herokuapp.com/get-pet';
 const url2 = 'https://adogpt.herokuapp.com/get-match';
+
+
+const names = [
+	'Charlie',
+	'Piper',
+	'Faker',
+	'Huni',
+	'Bang',
+	'Wolf',
+	'Peanut',
+	'Blank',
+	'Bengi',
+	'Piglet'
+]
+
+
 
 class Content extends React.Component {
 	constructor(props) {
@@ -19,10 +36,13 @@ class Content extends React.Component {
 			msg: -1,
 			data: [],
 			matchData: [],
+			isShowingModal: false,
+			modalData: {},
 		} // currently, we only use msg to determine view
 
-		this.handleClick = this.handleClick.bind(this)
-		this.handleSwipe = this.handleSwipe.bind(this)
+		this.handleClick = this.handleClick.bind(this);
+		this.handleSwipe = this.handleSwipe.bind(this);
+		this.handleClose = () => this.setState({isShowingModal: false});
 	}
 
 	componentWillReceiveProps(newProps) {
@@ -165,10 +185,15 @@ class Content extends React.Component {
 			.catch(err => { throw err });
 		})
 		.then(function() {
+			for (let i = 0; i < listOfUrls.length; i++) {
+				listOfUrls[i].name = names[Math.floor(Math.random() * names.length)];
+			}
+
 			that.setState({
 				data: listOfUrls,
 				matchData: listOfMatches,
 			});
+			
 
 			console.log(that.state.data);
 			console.log(that.state.matchData);
@@ -184,13 +209,22 @@ class Content extends React.Component {
 		this.setState({msg: data})
 	}
 
-	handleSwipe(data) {
+	handleSwipe(data, name) {
+		name = name || '';
 		if (data === 'end'){
 			return;
-		}
-		else {
+		} else {
+			let curr = this.state.data[0];
+			console.log(data + name);
+			console.log("swiped");
+			if (data == 'right') {
+				console.log("setting isShowingModal...");
+				this.setState({modalData: curr});
+				this.setState({isShowingModal: true});
+				console.log(this.state.modalData);
+			}
+
 			this.state.data.shift(); // clear last pet data
-			this.state.matchData.shift();
 
 			if (this.state.data.length === 0){
 				this.fetchPetData();
@@ -198,38 +232,69 @@ class Content extends React.Component {
 
 				console.log("UPDATED");
 			}
-
-			console.log("swiped");
+			
+			console.log(this.state.modalData);
 		}
 	}
 
 	render () {
 		let Content;
+		let ModalContent;
 
 		// state var
 		if ( this.state.msg !== -1 ) {
-			Content = <Msg id = {this.state.msg}/>
+			Content = <Msg id = {this.state.msg}/>;
 		} else {
 			Content = <Swipe
 						key={this.state.data.length}
 						handleSwipe={this.handleSwipe}
 						matchData={this.state.matchData}
 						data={this.state.data}
-						/>
+						isShowingModal={this.state.isShowingModal}
+						/>;
 		}
 
+		console.log(this.state.modalData)
+
+
+		if (this.state.isShowingModal) {
+			ModalContent =  (
+								<div className="modaler">
+									<h1>You've been matched!</h1>
+									<img src={this.state.modalData.images[0]}
+										 className="image"/>
+									<p>You've matched with {this.state.modalData.name}. <br/>We've added them to your match list
+									in the sidebar. <br/>Message them any time to let them know you're interested!</p>
+								</div>
+							)
+		}
+
+
 		return (
-				<div className='container-fluid content'>
-          <div className='row'>
-            <div className='col-md-3'>
-              <SideBar handleClick={this.handleClick}/>
-            </div>
-            <div className='col-md-9'>
-              {Content}
-            </div>
-          </div>
+		<div>
+			<div>
+			{
+				this.state.isShowingModal &&
+		        <ModalContainer onClose={this.handleClose}>
+		          <ModalDialog onClose={this.handleClose}>
+		            {ModalContent}
+		          </ModalDialog>
+		        </ModalContainer>
+			}
+			</div>
+
+			<div className='container-fluid content'>
+	          <div className='row'>
+	            <div className='col-md-3'>
+	              <SideBar handleClick={this.handleClick}/>
+	            </div>
+	            <div className='col-md-9'>
+	              {Content}
+	            </div>
+	          </div>
+	        </div>
         </div>
-			)
+		)
 	}
 }
 

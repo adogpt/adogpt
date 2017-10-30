@@ -2,8 +2,7 @@ import React from 'react'
 import Cards, { Card } from 'react-swipe-card'
 import './Swipe.scss'
 
-//const data = ['Alexandre', 'Thomas', 'Lucien']
-//data: ['Alexandre', 'Thomas', 'Lucien', '/0'];
+
 class Swipe extends React.Component {
 	constructor(props) {
 		super(props)
@@ -29,9 +28,9 @@ class Swipe extends React.Component {
 
 	render() {
 		let data = this.state.data;
-		let matchData = this.state.matchData;
-		//console.log(data);
-		//console.log(matchData);
+		// let matchData = this.state.matchData;
+		console.log(data);
+		// console.log(matchData);
 
 		return (
 			<Cards onEnd={this.handleSwipe('end')} className='master-root'>
@@ -39,8 +38,8 @@ class Swipe extends React.Component {
 		          <Card
 		            key={key}
 		            onSwipeLeft={() => this.handleSwipe('left')}
-		            onSwipeRight={() => this.handleSwipe('right')}>
-		            <h3>{item.species[0]}</h3>
+		            onSwipeRight={() => this.handleSwipe('right', item.name)}>
+		            <h3>{item.name}</h3>
 					<img src={item.images[0]} className='image'/>
 		          </Card>
 		        )}

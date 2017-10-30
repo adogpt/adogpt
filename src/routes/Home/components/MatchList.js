@@ -2,7 +2,7 @@ import React from 'react'
 import ReactList from 'react-list'
 import Avatar from 'react-avatar'
 
-const matches = [
+let matches = [
 	{
 		name: "chairman meow"
 	}, 

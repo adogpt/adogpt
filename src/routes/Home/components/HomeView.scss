@@ -63,3 +63,19 @@
 .left {
 	text-align: left;
 }
+
+.image {
+    height: 280px;
+    width: 290px;
+    position: relative;
+
+    margin: 0 auto;
+    transition: box-shadow .3s;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 2px 2px rgba(0,0,0,0.23);
+    cursor: pointer;
+}
+
+.modaler {
+	text-align: center;
+	width: 400px;
+}
