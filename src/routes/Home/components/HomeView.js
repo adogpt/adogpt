@@ -48,8 +48,11 @@ class HomeView extends React.Component {
     }
   }
   logChange(val) {
-    console.log('Selected: ', val.value);
-    this.setState({animal: val});
+    if (val == null) this.setState({animal: ''});
+    else { 
+      console.log('Selected: ', val.value);
+      this.setState({animal: val});
+    }
   }
 
   render () {
