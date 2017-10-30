@@ -6,6 +6,7 @@ import Toolbar from 'material-ui/Toolbar'
 import Button from 'material-ui/Button'
 import IconButton from 'material-ui/IconButton'
 import TextField from 'material-ui/TextField'
+import Avatar from 'react-avatar'
 
 
 class HomeView extends React.Component {
@@ -25,15 +26,27 @@ class HomeView extends React.Component {
     this.setState({fieldValue: e.target.value})
   }
 
+
   render () {
-    let content = (<Content searchText={this.state.searchText}/>)
+    let content = (<Content ref="child" searchText={this.state.searchText}/>)
 
     return (
       <div className='content-area'>
         <AppBar position='static' className='header'>
-          <Toolbar className='toolBar'>
-            Adogpt
-          </Toolbar>
+          <div className='row'>
+            <div className='col-md-9'>
+              <Toolbar className='toolBar' onClick={() => this.refs.child.getAlert()}>
+                Find Pets For Adoption Nearby
+              </Toolbar>
+            </div>
+          
+            <div className='col-md-3'>
+              <Toolbar className="avatarBar">
+                    <Avatar name="John Smith" size={40} className="avatar" />
+                    John Smith
+              </Toolbar>
+            </div>
+          </div>
         </AppBar>
 
         {content}

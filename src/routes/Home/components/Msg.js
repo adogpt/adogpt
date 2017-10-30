@@ -1,6 +1,7 @@
 import React from 'react'
 
 import Avatar from 'react-avatar'
+import './Msg.scss'
 
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
@@ -92,12 +93,7 @@ class Msg extends React.Component {
 	render() {
 		return (
 				<div className='content-area'>
-					<AppBar position='static'>
-						<Toolbar>
-							<Avatar name={matches[this.props.id].name} size={40} className="avatar" />
-							{matches[this.props.id].name}
-						</Toolbar>
-					</AppBar>
+					
 				 	<ReactList
 				    itemRenderer={this.renderItem}
 				    length={this.state.messages.length}
@@ -110,8 +106,8 @@ class Msg extends React.Component {
               onChange={this.onChange.bind(this)}
             />
             
-            <Button 
-              color="primary" 
+            <Button className='button'
+          
               onClick={this.onSendClick.bind(this)}
             >
               Send
