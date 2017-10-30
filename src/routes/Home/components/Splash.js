@@ -1,7 +1,6 @@
 import React from 'react'
-import './HomeView.scss'
 
-class Splash extends React.Component { 
+class Splash extends React.Component {
 	constructor(props) {
 		super(props)
 	}

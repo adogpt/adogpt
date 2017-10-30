@@ -9,6 +9,7 @@ import Toolbar from 'material-ui/Toolbar'
 class SideBar extends React.Component {
 	constructor(props) {
 		super(props)
+		this.handleClick = this.props.handleClick
 	}
 
 	render() {
@@ -16,8 +17,10 @@ class SideBar extends React.Component {
 				<div>
 					<AppBar position='static'>
 						<Toolbar>
-							<Avatar name="David Zhang" size={40} className="avatar" />
-							David Zhang
+							<div onClick={() => this.handleClick(-1)}>
+							 	<Avatar name="David Zhang" size={40} className="avatar" />
+								David Zhang
+							</div>
 						</Toolbar>
 					</AppBar>
 					<MatchList handleClick={this.props.handleClick}/>

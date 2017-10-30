@@ -1,8 +1,6 @@
 import React from 'react'
 import './HomeView.scss'
 import Content from './Content'
-import Splash from './Splash'
-
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
 import Button from 'material-ui/Button'
@@ -35,19 +33,6 @@ class HomeView extends React.Component {
         <AppBar position='static' className='header'>
           <Toolbar className='toolBar'>
             Adogpt
-            <form className='form' >
-              <TextField 
-                value={this.state.fieldValue} 
-                onChange={this.onChange.bind(this)}
-              />
-              
-              <Button 
-                color="contrast" 
-                onClick={this.onSearchClick.bind(this)}
-              >
-                Search
-              </Button>
-            </form>
           </Toolbar>
         </AppBar>
 
