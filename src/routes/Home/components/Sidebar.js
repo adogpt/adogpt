@@ -1,6 +1,6 @@
 import React from 'react'
 import MatchList from './MatchList'
-
+import './Sidebar.scss'
 import Avatar from 'react-avatar'
 
 import AppBar from 'material-ui/AppBar'
@@ -14,14 +14,9 @@ class SideBar extends React.Component {
 
 	render() {
 		return (
-				<div>
+				<div className="matches">
 					<AppBar position='static'>
-						<Toolbar>
-							<div onClick={() => this.handleClick(-1)}>
-							 	<Avatar name="David Zhang" size={40} className="avatar" />
-								David Zhang
-							</div>
-						</Toolbar>
+						
 					</AppBar>
 					<MatchList handleClick={this.props.handleClick}/>
 				</div>

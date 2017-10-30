@@ -203,6 +203,9 @@ class Content extends React.Component {
 		}
 	}
 
+	getAlert() {
+		this.setState({msg: -1});
+	}
 	render () {
 		let Content;
 

@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactList from 'react-list'
 import Avatar from 'react-avatar'
+import './MatchList.scss'
 
 const matches = [
 	{
@@ -33,15 +34,24 @@ class MatchList extends React.Component {
 
 	constructor(props) {
 		super(props)
+		this.state = {
+			clicked: -1
+		}
 		this.renderItem = this.renderItem.bind(this)
 		this.handleClick = this.props.handleClick
 	}
 
-	
+
+
+	click(ind) {
+		this.handleClick(ind);
+		this.setState({clicked: ind});
+	}
 
   renderItem(index, key) {
+  	let bgColor = (index == this.state.clicked) ? "#FF634D" : "#F7F3E8"
     return (
-    		<div key={key} className="messageListItem" onClick={() => this.handleClick(index)}>
+    		<div key={key} style={{backgroundColor: bgColor, cursor: 'pointer'}} className="messageListItem" onClick={() => this.click(index)}>
     			<Avatar name= {matches[index].name} size={60} className="avatar"/>
     			{matches[index].name}
     		</div>
@@ -51,8 +61,11 @@ class MatchList extends React.Component {
 	render() {
 		return (
 				<div>
-					<h1> Matches </h1>
-					<div >
+					<h1 className="matchHeader"> Matches </h1>
+					<div className="matchBorder">
+					_________________________
+					</div>
+					<div className="matches">
 					  <ReactList
 					    itemRenderer={this.renderItem}
 					    length={matches.length}
