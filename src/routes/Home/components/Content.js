@@ -9,6 +9,10 @@ import match from '../assets/itsamatch.png';
 const url = 'https://adogpt.herokuapp.com/get-pet';
 const url2 = 'https://adogpt.herokuapp.com/get-match';
 
+const catKeywords = ['cat', 'Cat', 'kitten','Kitten'];
+const dogKeywords = ['dog', 'Dog',' puppy', 'Puppy'];
+const bunnyKeywords = ['bunny','Bunny','rabbit','Rabbit'];
+const birdKeywords = ['bird','Bird'];
 
 // Ideally comes from endpoints but too late for that so yolo
 const names = [
@@ -22,13 +26,15 @@ const names = [
 	'Blank',
 	'Bengi',
 	'Piglet',
-	'MaRin',
-	'Easyhoon',
-	'Poohmandu',
+	'Marin',
+	'Hoon',
+	'Pooh',
 	'Impact',
 	'Duke',
 	'Gunther',
 	'Sprinkles',
+	'Derek',
+	'Chocolate',
 ]
 
 // Ideally comes from db access endpoint or stores but yolo
@@ -132,6 +138,7 @@ class Content extends React.Component {
 			modalData: {},
 			matches: matches,
 			conversations: conversations,
+			filter: '',
 		} // currently, we only use msg to determine view
 
 		this.handleClick = this.handleClick.bind(this);
@@ -139,7 +146,33 @@ class Content extends React.Component {
 		this.handleClose = () => this.setState({isShowingModal: false});
 	}
 
+	filterData(filter) {
+		// ES6 magic for filtering
+		let data = this.state.data.filter(item =>
+			(filter == '') ||
+			(filter == 'cat' && [...new Set(item.species)].filter(x => new Set(catKeywords).has(x)).length > 0) ||
+			(filter == 'dog' && [...new Set(item.species)].filter(x => new Set(dogKeywords).has(x)).length > 0) ||
+			(filter == 'rabbit' && [...new Set(item.species)].filter(x => new Set(bunnyKeywords).has(x)).length > 0) ||
+			(filter == 'bird' && [...new Set(item.species)].filter(x => new Set(birdKeywords).has(x)).length > 0)
+		)
+		this.setState({data: data});
+	}
+
 	componentWillReceiveProps(newProps) {
+		this.setState({filter: newProps.filter});
+		let that = this;
+		Promise.resolve()
+		.then(function() {
+			that.filterData(newProps.filter);
+		})
+		.then(function() {
+			console.log(that.state.data.length);
+			if (that.state.data.length === 0){
+				that.fetchPetData();
+				that.forceUpdate();
+			}
+		})
+		
 	}
 
 
@@ -288,6 +321,11 @@ class Content extends React.Component {
 				matchData: listOfMatches,
 			});
 			
+			that.filterData(that.state.filter);
+			if (that.state.data.length === 0){
+				that.fetchPetData();
+				that.forceUpdate();
+			}
 
 			// console.log(that.state.data);
 			// console.log(that.state.matchData);
@@ -343,8 +381,6 @@ class Content extends React.Component {
 			if (this.state.data.length === 0){
 				this.fetchPetData();
 				this.forceUpdate();
-
-				// console.log("UPDATED");
 			}
 			
 		}
@@ -359,6 +395,7 @@ class Content extends React.Component {
 	getAlert() {
 		this.setState({msg: -1});
 	}
+
 	render () {
 		let Content;
 		let ModalContent;
@@ -369,12 +406,18 @@ class Content extends React.Component {
 						   conversations={this.state.conversations}
 						   onUpdateMessage={this.onUpdateMessage}/>;
 		} else {
+			// i hate sublime
+
+			console.log(this.state.filter);
+			console.log(this.state.data);
+
 			Content = <Swipe
 						key={this.state.data.length}
 						handleSwipe={this.handleSwipe}
 						matchData={this.state.matchData}
 						data={this.state.data}
 						isShowingModal={this.state.isShowingModal}
+						filter={this.state.filter}
 						/>;
 		}
 

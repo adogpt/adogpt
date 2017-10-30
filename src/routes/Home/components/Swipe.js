@@ -10,26 +10,22 @@ class Swipe extends React.Component {
 		this.state = {
 			data: this.props.data,
 			matchData: this.props.matchData,
+			filter: '',
 		}
 
 		this.handleSwipe = this.props.handleSwipe
 	}
 
-	// componentWillReceiveProps(nextProps){
-	// 	if (this.props !== nextProps){
-	// 		this.setState({
-	// 			data: nextProps.data,
-	// 			matchData: nextProps.matchData,
-	// 		});
-	// 		this.forceUpdate();
-	// 		console.log("updated");
-	// 	}
-	// }
+	componentWillReceiveProps(nextProps){
+		this.setState({
+			filter: nextProps.filter,
+			data: nextProps.data,
+		});
+	}
 
 	render() {
-		// let data = this.state.data;
+		
 		// let matchData = this.state.matchData;
-		// console.log(data);
 		// console.log(matchData);
 
 		return (

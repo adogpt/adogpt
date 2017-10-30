@@ -49,12 +49,14 @@ class HomeView extends React.Component {
   }
   logChange(val) {
     console.log('Selected: ', val.value);
-    this.setState({animal: val});
+    this.setState({animal: val.value});
   }
 
   render () {
     
-    let content = <Content ref="child" searchText={this.state.searchText}/>;
+    let content = <Content ref="child"
+                           searchText={this.state.searchText}
+                           filter={this.state.animal}/>;
 
     let options = [
       { value: 'cat', label: 'Cat' },
