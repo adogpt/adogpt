@@ -27,14 +27,14 @@ class Swipe extends React.Component {
 	// }
 
 	render() {
-		let data = this.state.data;
+		// let data = this.state.data;
 		// let matchData = this.state.matchData;
-		console.log(data);
+		// console.log(data);
 		// console.log(matchData);
 
 		return (
 			<Cards onEnd={this.handleSwipe('end')} className='master-root'>
-		        {data.map((item, key) =>
+		        {this.state.data.map((item, key) =>
 		          <Card
 		            key={key}
 		            onSwipeLeft={() => this.handleSwipe('left')}

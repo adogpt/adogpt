@@ -4,14 +4,16 @@ import SideBar from './Sidebar'
 import Swipe from './Swipe'
 import Msg from './Msg'
 import {ModalContainer, ModalDialog} from 'react-modal-dialog';
+import match from '../assets/itsamatch.png';
 
 const url = 'https://adogpt.herokuapp.com/get-pet';
 const url2 = 'https://adogpt.herokuapp.com/get-match';
 
 
+// Ideally comes from endpoints but too late for that so yolo
 const names = [
 	'Charlie',
-	'Piper',
+	'Johann',
 	'Faker',
 	'Huni',
 	'Bang',
@@ -19,9 +21,99 @@ const names = [
 	'Peanut',
 	'Blank',
 	'Bengi',
-	'Piglet'
+	'Piglet',
+	'MaRin',
+	'Easyhoon',
+	'Poohmandu',
+	'Impact',
+	'Duke',
+	'Gunther',
+	'Sprinkles',
 ]
 
+// Ideally comes from db access endpoint or stores but yolo
+let matches = [
+	{
+		name: "Chairman Meow",
+		id: 0,
+	},
+	{
+		name: "Sgt. Peppers",
+		id: 1,
+	},
+	{
+		name: "Llama Del Ray",
+		id: 2,
+	},
+]
+
+// ditto
+let conversations = {
+	0: {
+		messages: [
+			{
+				text: 'Hello! I\'m interested in adopting Chairman Meow!',
+				pos: 1
+			},
+			{
+				text: 'Hi! Do you have any questions in particular?',
+				pos: 0
+			},
+			{
+				text: 'How old is he??',
+				pos: 1
+			},
+			{
+				text: 'He is 4 years old! Born on the 120th birthday of our great leader.',
+				pos: 0
+			},
+		]
+	},
+	1: {
+		messages: [
+			{
+				text: 'Hi! How is Sgt Peppers doing after the war?',
+				pos: 1
+			},
+			{
+				text: 'Some minor wounds and mild PTSD. He would love to go a loving family!',
+				pos: 0
+			},
+			{
+				text: 'How much are veterans paid these days?',
+				pos: 1
+			},
+		]
+	},
+	2: {
+		messages: [
+			{
+				text: 'Hi! I really love animals. They\'re my favorite things next to humans. My question \
+				is, what are her usual habits? Is she well-mannered or playful? How does she handle new situations? \
+				How is she with kids? I have 6 brothers and 2 sisters. Will she be okay estranged from her old family?\
+				How old is she now? When is the earliest time we can pick her up? Is there some sort of application process\
+				or vetting situation? How many more people are interested?',
+				pos: 1
+			},
+			{
+				text: 'yup',
+				pos: 0
+			},
+			{
+				text: 'Is that a yes to everything???? Please be more clear',
+				pos: 1
+			},
+			{
+				text: 'pls respond',
+				pos: 1
+			},
+			{
+				text: 'yup',
+				pos: 0
+			},
+		]
+	}
+}
 
 
 class Content extends React.Component {
@@ -38,6 +130,8 @@ class Content extends React.Component {
 			matchData: [],
 			isShowingModal: false,
 			modalData: {},
+			matches: matches,
+			conversations: conversations,
 		} // currently, we only use msg to determine view
 
 		this.handleClick = this.handleClick.bind(this);
@@ -195,8 +289,8 @@ class Content extends React.Component {
 			});
 			
 
-			console.log(that.state.data);
-			console.log(that.state.matchData);
+			// console.log(that.state.data);
+			// console.log(that.state.matchData);
 		});
 	}
 
@@ -205,6 +299,8 @@ class Content extends React.Component {
 	}
 
 	handleClick(data) {
+		//console.log("clicked:", data);
+
 		// set current viewing id
 		this.setState({msg: data})
 	}
@@ -215,13 +311,31 @@ class Content extends React.Component {
 			return;
 		} else {
 			let curr = this.state.data[0];
-			console.log(data + name);
-			console.log("swiped");
+			// console.log("swiped");
 			if (data == 'right') {
-				console.log("setting isShowingModal...");
+				// console.log("setting isShowingModal...");
 				this.setState({modalData: curr});
 				this.setState({isShowingModal: true});
-				console.log(this.state.modalData);
+
+
+				let matches = this.state.matches.slice();
+				let nextId = matches.length;
+				matches.push({
+					name: name,
+					id: nextId,
+				});
+
+				this.setState({matches: matches});
+
+				let conversations = this.state.conversations;
+				conversations[nextId] = {
+					messages: [],
+				}
+				this.setState({conversations: conversations});
+
+				// console.log(this.state.modalData);
+				console.log(this.state.matches);
+				console.log(this.state.conversations);
 			}
 
 			this.state.data.shift(); // clear last pet data
@@ -230,11 +344,16 @@ class Content extends React.Component {
 				this.fetchPetData();
 				this.forceUpdate();
 
-				console.log("UPDATED");
+				// console.log("UPDATED");
 			}
 			
-			console.log(this.state.modalData);
 		}
+	}
+
+	onUpdateMessage(newMsg) {
+		let conversations = this.state.conversations;
+		conversations[this.state.id].messages.push(newMsg)
+		this.setState({conversations: conversations});
 	}
 
 	getAlert() {
@@ -246,7 +365,9 @@ class Content extends React.Component {
 
 		// state var
 		if ( this.state.msg !== -1 ) {
-			Content = <Msg id = {this.state.msg}/>;
+			Content = <Msg id={this.state.msg}
+						   conversations={this.state.conversations}
+						   onUpdateMessage={this.onUpdateMessage}/>;
 		} else {
 			Content = <Swipe
 						key={this.state.data.length}
@@ -257,15 +378,17 @@ class Content extends React.Component {
 						/>;
 		}
 
-		console.log(this.state.modalData)
+		// console.log(this.state)
 
 
 		if (this.state.isShowingModal) {
 			ModalContent =  (
 								<div className="modaler">
-									<h1>You've been matched!</h1>
+									<img src={match} className="image2"/>
 									<img src={this.state.modalData.images[0]}
 										 className="image"/>
+									<br/>
+									<br/>
 									<p>You've matched with {this.state.modalData.name}. <br/>We've added them to your match list
 									in the sidebar. <br/>Message them any time to let them know you're interested!</p>
 								</div>
@@ -289,7 +412,8 @@ class Content extends React.Component {
 			<div className='container-fluid content'>
 	          <div className='row'>
 	            <div className='col-md-3'>
-	              <SideBar handleClick={this.handleClick}/>
+	              <SideBar handleClick={this.handleClick}
+	              		   matches={this.state.matches}/>
 	            </div>
 	            <div className='col-md-9'>
 	              {Content}

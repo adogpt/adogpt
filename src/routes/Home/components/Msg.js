@@ -10,111 +10,70 @@ import Button from 'material-ui/Button'
 
 import ReactList from 'react-list'
 
-const matches = [
-	{
-		name: "chairman meow"
-	}, 
-	{
-		name: "kitty kat"
-	},
-	{
-		name: "sgt peppers"
-	},
-	{
-		name: "llama del rey"
-	},
-	{
-		name: "snoop dawg"
-	},
-	{
-		name: "steve"
-	},
-	{
-		name: "mr woof"
-	},
-	{
-		name: "roger rabbit"
-	}
-]
-
-let messages = [
-	{
-		text: 'hello!',
-		pos: 0
-	},
-	{
-		text: 'h1!',
-		pos: 1
-	},
-	{
-		text: 'how old is the animal?',
-		pos: 1
-	},
-	{
-		text: 'she is 3 yo!',
-		pos: 0
-	}
-]
 
 class Msg extends React.Component {
 	constructor(props) {
 		super(props)
 		this.renderItem = this.renderItem.bind(this)
-		this.state = {fieldValue: '', searchText: '', messages}
+		this.state = {
+			fieldValue: '',
+			searchText: '',
+			conversations: props.conversations,
+			id: props.id,
+		}
+
+		this.onUpdateMessage = props.onUpdateMessage;
+	}
+	componentWillReceiveProps(newProps) {
+		this.setState({
+			id: newProps.id,
+			conversations: newProps.conversations,
+		});
+	}
+
+	onChange(e) {
+		this.setState({fieldValue: e.target.value})
+	}
+
+
+	onSendClick () {
+		let newMsg = {
+			text: this.state.fieldValue,
+			pos: 1
+		}
+		this.onUpdateMessage(newMsg)
+		this.setState({fieldValue: ''})
 	}
 
 	renderItem(index, key) {
-		let pos = this.state.messages[index].pos == 0 ? 'left' : 'right'
+		let message = this.state.conversations[this.state.id].messages[index];
+		let pos = message.pos == 0 ? 'left' : 'right';
 		return (
 			<div key={key} className={pos}>
 				<div className='msgBubble'>
-				{this.state.messages[index].text}
+				{message.text}
 				</div>
 			</div>
 		)
 	}
 
-	onChange(e) {
-    this.setState({fieldValue: e.target.value})
-  }
-
-
-	onSendClick () {
-    // update children
-    let new_msg = {
-    	text: this.state.fieldValue,
-    	pos: 1
-    }
-    messages.push(new_msg)
-    this.setState(messages)
-    this.setState({fieldValue: ''})
-  }
-
 	render() {
 		return (
-				<div className='content-area'>
-					
-				 	<ReactList
-				    itemRenderer={this.renderItem}
-				    length={this.state.messages.length}
-				    type='uniform'
-				  />
-				  <form className='form' >
-            <TextField 
-            	color="primary" 
-              value={this.state.fieldValue} 
-              onChange={this.onChange.bind(this)}
-            />
-            
-            <Button className='button'
-          
-              onClick={this.onSendClick.bind(this)}
-            >
-              Send
-            </Button>
-          </form>
-				</div>
-			)
+			<div className='content-area'>
+			 	<ReactList itemRenderer={this.renderItem}
+			    		   length={this.state.conversations[this.state.id].messages.length}
+			    		   type='simple'/>
+			 	<form className='form'>
+		            <TextField color="primary" 
+				               value={this.state.fieldValue} 
+				               onChange={this.onChange.bind(this)}/>
+            		<Button className='button' 
+            				onClick={this.onSendClick.bind(this)}>
+              		Send
+              		</Button>
+          		</form>
+			</div>
+		)
 	}
 
 }

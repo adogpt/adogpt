@@ -3,44 +3,22 @@ import ReactList from 'react-list'
 import Avatar from 'react-avatar'
 import './MatchList.scss'
 
-let matches = [
-	{
-		name: "chairman meow"
-	}, 
-	{
-		name: "kitty kat"
-	},
-	{
-		name: "sgt peppers"
-	},
-	{
-		name: "llama del rey"
-	},
-	{
-		name: "snoop dawg"
-	},
-	{
-		name: "steve"
-	},
-	{
-		name: "mr woof"
-	},
-	{
-		name: "roger rabbit"
-	}
-]
 
 class MatchList extends React.Component {
 
 	constructor(props) {
 		super(props)
 		this.state = {
-			clicked: -1
+			clicked: -1,
+			matches: props.matches,
 		}
 		this.renderItem = this.renderItem.bind(this)
 		this.handleClick = this.props.handleClick
 	}
 
+	componentWillReceiveProps(nextProp) {
+		this.setState({matches: nextProp.matches});
+	}
 
 
 	click(ind) {
@@ -48,15 +26,16 @@ class MatchList extends React.Component {
 		this.setState({clicked: ind});
 	}
 
-  renderItem(index, key) {
-  	let bgColor = (index == this.state.clicked) ? "#FF634D" : "#F7F3E8"
-    return (
-    		<div key={key} style={{backgroundColor: bgColor, cursor: 'pointer'}} className="messageListItem" onClick={() => this.click(index)}>
-    			<Avatar name= {matches[index].name} size={60} className="avatar"/>
-    			{matches[index].name}
-    		</div>
-    	)
-  }
+	renderItem(index, key) {
+		let bgColor = (index == this.state.clicked) ? "#FF634D" : "#F7F3E8";
+
+		return (
+			<div key={key} style={{backgroundColor: bgColor, cursor: 'pointer'}} className="messageListItem" onClick={() => this.click(index)}>
+				<Avatar name= {this.state.matches[index].name} size={60} className="avatar"/>
+				{this.state.matches[index].name}
+			</div>
+		)
+	}
 
 	render() {
 		return (
@@ -68,7 +47,7 @@ class MatchList extends React.Component {
 					<div className="matches">
 					  <ReactList
 					    itemRenderer={this.renderItem}
-					    length={matches.length}
+					    length={this.state.matches.length}
 					    type='uniform'
 					  />
 					</div>
