@@ -18,7 +18,12 @@ class HomeView extends React.Component {
   constructor(props) {
     super(props)
     this.logChange = this.logChange.bind(this);
-    this.state = {fieldValue: '', searchText: '', searched: false, animal: ''}
+    this.state = {fieldValue: '', searchText: '', searched: false, val: null, animals:[
+      { value: 'cat', label: 'Cat' },
+      { value: 'dog', label: 'Dog' },
+      { value: 'rabbit', label: 'Rabbit'},
+      { value: 'bird', label: 'Bird'},
+    ]}
   }
 
   onSearchClick () {
@@ -47,24 +52,38 @@ class HomeView extends React.Component {
       console.info(`Selected "${value}"`);
     }
   }
-  logChange(val) {
-    if (val == null) this.setState({animal: ''});
-    else { 
-      console.log('Selected: ', val.value);
-      this.setState({animal: val});
-    }
+  logChange(selections) {
+    // if (val == null) this.setState({animal: ''});
+    // else { 
+    //   console.log('Selected: ', val.value);
+    //   this.setState({animal: val});
+    // }
+    let newAnimals = [].concat(this.state.animals);
+    selections.forEach(selection => {
+      let match = this.state.animals.find(
+        entry => (entry.value == selection.value));
+      if (!match) {
+        newAnimals.add(match);
+      }
+    })
+    this.setState({
+      val: [].concat(selections),
+      animals: newAnimals
+    });
+     console.log("Selected: ", this.state.val);
+
   }
 
   render () {
     
     let content = <Content ref="child" searchText={this.state.searchText}/>;
 
-    let options = [
-      { value: 'cat', label: 'Cat' },
-      { value: 'dog', label: 'Dog' },
-      { value: 'rabbit', label: 'Rabbit'},
-      { value: 'bird', label: 'Bird'},
-    ];
+    // let options = [
+    //   { value: 'cat', label: 'Cat' },
+    //   { value: 'dog', label: 'Dog' },
+    //   { value: 'rabbit', label: 'Rabbit'},
+    //   { value: 'bird', label: 'Bird'},
+    // ];
 
     return (
       <div className='content-area'>
@@ -78,12 +97,12 @@ class HomeView extends React.Component {
 
            <div className='col-md-3 avatarBar'>
            
-            <Select
+            <Select.Creatable 
               name="form-field-name"
               ignoreCase={true}
-              value={this.state.animal}
-              options={options}
-
+              value={this.state.val}
+              options={this.state.animals}
+              multi={true}
               onChange={this.logChange}
             />
            </div>
