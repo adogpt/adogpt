@@ -138,7 +138,7 @@ class Content extends React.Component {
 			modalData: {},
 			matches: matches,
 			conversations: conversations,
-			filter: '',
+			filter: [],
 		} // currently, we only use msg to determine view
 
 		this.handleClick = this.handleClick.bind(this);
@@ -148,13 +148,16 @@ class Content extends React.Component {
 
 	filterData(filter) {
 		// ES6 magic for filtering
+		console.log(this.state.filter);
 		let data = this.state.data.filter(item =>
-			(filter == '') ||
-			(filter == 'cat' && [...new Set(item.species)].filter(x => new Set(catKeywords).has(x)).length > 0) ||
-			(filter == 'dog' && [...new Set(item.species)].filter(x => new Set(dogKeywords).has(x)).length > 0) ||
-			(filter == 'rabbit' && [...new Set(item.species)].filter(x => new Set(bunnyKeywords).has(x)).length > 0) ||
-			(filter == 'bird' && [...new Set(item.species)].filter(x => new Set(birdKeywords).has(x)).length > 0)
+			(filter.length == 0) ||
+			(new Set(filter).has('cat') && [...new Set(item.species)].filter(x => new Set(catKeywords).has(x)).length > 0) ||
+			(new Set(filter).has('dog') && [...new Set(item.species)].filter(x => new Set(dogKeywords).has(x)).length > 0) ||
+			(new Set(filter).has('rabbit') && [...new Set(item.species)].filter(x => new Set(bunnyKeywords).has(x)).length > 0) ||
+			(new Set(filter).has('bird') && [...new Set(item.species)].filter(x => new Set(birdKeywords).has(x)).length > 0) ||
+			([...new Set(filter)].filter(x => new Set(item.species).has(x)).length > 0)
 		)
+		console.log(data);
 		this.setState({data: data});
 	}
 
